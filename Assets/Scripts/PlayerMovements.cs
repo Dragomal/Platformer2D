@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class PlayerMovements : MonoBehaviour
 {
     [SerializeField, Range(0,10)] private float _movementSpeed;
@@ -13,17 +9,18 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField, Range(0,4)] private float _gravityScaleJump;
     [SerializeField, Range(0,4)] private float _gravityScaleRelease;
     [SerializeField, Range(0,4)] private float _gravityScaleNormal;
-
     
     private bool _isGrounded;
     private bool _smashAction;
     private Vector2 _moveAction;
     private Rigidbody2D _rigidbody2D;
+    private BoxGroundSensor _boxGroundSensor;
     private InputAction _onMoveAction;
     private InputAction _onSmashAction;
     private void Start(){
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        
+        _boxGroundSensor = GetComponent<BoxGroundSensor>();
+
         PlayerInput _playerInput = GetComponent<PlayerInput>();
         _onMoveAction = _playerInput.actions.FindAction("Move");
         _onSmashAction = _playerInput.actions.FindAction("Smash");
@@ -31,9 +28,9 @@ public class PlayerMovements : MonoBehaviour
     private void FixedUpdate()
     {
         ReadValues();
-        GroundSensor();
         UpdateHorizontalMovements();
         UpdateGravityScale();
+        
     }
 
     private void UpdateGravityScale()
@@ -48,21 +45,9 @@ public class PlayerMovements : MonoBehaviour
         }
     }
 
-    private void GroundSensor()
-    {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.5f, 0.5f), 0, Vector2.down, 2);
-
-        _isGrounded = false;
-
-        if (hit && _rigidbody2D.velocity.y == 0)
-        {
-            _isGrounded = true;
-        }
-    }
-
     private void UpdateHorizontalMovements()
     {
-        if (_isGrounded)
+        if (_boxGroundSensor.IsGrounded())
         {
             _rigidbody2D.velocity = new Vector2(_moveAction.x * _movementSpeed, _rigidbody2D.velocity.y);
         }
@@ -80,7 +65,7 @@ public class PlayerMovements : MonoBehaviour
     }
 
     private void OnSmash(InputValue value){
-        if(!_isGrounded) return;
+        if(!_boxGroundSensor.IsGrounded()) return;
 
         _rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
         _rigidbody2D.gravityScale = _gravityScaleJump;

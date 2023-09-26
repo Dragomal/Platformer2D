@@ -635,8 +635,9 @@ GameObject:
   - component: {fileID: 1441450909}
   - component: {fileID: 1441450908}
   - component: {fileID: 1441450907}
-  - component: {fileID: 1441450911}
   - component: {fileID: 1441450912}
+  - component: {fileID: 1441450911}
+  - component: {fileID: 1441450913}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -699,7 +700,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441450906}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1302294, y: -1.85, z: 0.03973891}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -755,3 +756,18 @@ MonoBehaviour:
   _gravityScaleJump: 1.5
   _gravityScaleRelease: 2.5
   _gravityScaleNormal: 3
+--- !u!114 &1441450913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441450906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21f808c1b5f5b54db5adbe7d9843665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
